@@ -6,6 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import java.util.concurrent.Executors;
 
 @Database(entities = {ContactEntity.class, CallLogEntity.class}, version = 1)
@@ -29,12 +30,12 @@ public abstract class AppDatabase extends RoomDatabase {
                                     Executors.newSingleThreadExecutor().execute(() -> {
                                         AppDatabase database = getInstance(context);
 
-                                        // Insert 30 dummy Contacts
+                                        // Insert 30 dummy Contacts (Every 5th marked favorite)
                                         for (int i = 1; i <= 30; i++) {
                                             database.contactDao().insertContact(new ContactEntity(
                                                     "Contact " + i,
                                                     "987654321" + i,
-                                                    false  // Not favorite initially
+                                                    i % 5 == 0 // Every 5th contact is favorite
                                             ));
                                         }
 
@@ -50,7 +51,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     });
                                 }
                             })
-                            .allowMainThreadQueries()  // You can remove this for production
+                            .allowMainThreadQueries()  // For demo only!
                             .build();
                 }
             }

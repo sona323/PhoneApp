@@ -1,5 +1,7 @@
 package com.example.mda;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,7 @@ public class ContactsFragment extends Fragment {
     private List<ContactEntity> contactList;
 
     public ContactsFragment() {
-        // Required empty public constructor
+        // Required empty constructor
     }
 
     @Nullable
@@ -31,15 +33,28 @@ public class ContactsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewContacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        loadContacts();
+
+        return view;
+    }
+
+    private void loadContacts() {
         AppDatabase db = AppDatabase.getInstance(requireContext());
         contactList = db.contactDao().getAllContacts();
 
         adapter = new ContactAdapter(contactList, contact -> {
-            // You can open DialogFragment here on click if you want
-        });
+            // Open Dialer on Click
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + contact.phone));
+            startActivity(intent);
+        }, requireContext());
 
         recyclerView.setAdapter(adapter);
+    }
 
-        return view;
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadContacts();
     }
 }
