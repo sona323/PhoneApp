@@ -22,12 +22,14 @@ class MainActivity : AppCompatActivity() {
         adapter = ViewPagerAdapter(this)
         viewPager.adapter = adapter
 
+        // Attach tabs with ViewPager2 pages
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Keypad"
-                1 -> tab.text = "Recent"
-                2 -> tab.text = "Favorites"
-                3 -> tab.text = "Contacts"
+            tab.text = when (position) {
+                0 -> "Keypad"
+                1 -> "Recent"
+                2 -> "Favorites"
+                3 -> "Contacts"
+                else -> "Tab ${position + 1}"
             }
         }.attach()
     }

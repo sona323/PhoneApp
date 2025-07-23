@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,9 +19,10 @@ public class KeypadFragment extends Fragment {
     private EditText numberDisplay;
     private Button btnDial;
     private ImageButton deleteButton;
+    private TextView callingStatus;
 
     private Handler handler = new Handler();
-    private boolean isLongPressed = false;
+    private boolean isCalling = false;
 
     @Nullable
     @Override
@@ -31,8 +34,8 @@ public class KeypadFragment extends Fragment {
         numberDisplay = view.findViewById(R.id.numberDisplay);
         btnDial = view.findViewById(R.id.btnDial);
         deleteButton = view.findViewById(R.id.deleteButton);
+        callingStatus = view.findViewById(R.id.callingStatus); // Must be in your XML layout
 
-        // Setup buttons 0-9, *, #
         setupButton(view, R.id.btn0, "0");
         setupButton(view, R.id.btn1, "1");
         setupButton(view, R.id.btn2, "2");
@@ -46,7 +49,6 @@ public class KeypadFragment extends Fragment {
         setupButton(view, R.id.btnStar, "*");
         setupButton(view, R.id.btnHash, "#");
 
-        // Backspace Logic
         deleteButton.setOnClickListener(v -> {
             String currentText = numberDisplay.getText().toString();
             if (!currentText.isEmpty()) {
@@ -55,12 +57,21 @@ public class KeypadFragment extends Fragment {
             checkDialButtonState();
         });
 
-        // Long press = clear all
         deleteButton.setOnLongClickListener(v -> {
             numberDisplay.setText("");
             checkDialButtonState();
             return true;
         });
+
+        btnDial.setOnClickListener(v -> {
+            if (!isCalling) {
+                startCall();
+            } else {
+                endCall();
+            }
+        });
+
+        checkDialButtonState();
 
         return view;
     }
@@ -75,5 +86,28 @@ public class KeypadFragment extends Fragment {
 
     private void checkDialButtonState() {
         btnDial.setEnabled(!numberDisplay.getText().toString().isEmpty());
+    }
+
+    private void startCall() {
+        String number = numberDisplay.getText().toString().trim();
+        if (number.isEmpty()) return;
+
+        isCalling = true;
+        callingStatus.setText("Calling " + number + "...");
+        callingStatus.setVisibility(View.VISIBLE);
+        btnDial.setText("End Call");
+        deleteButton.setEnabled(false);
+
+        // Simulate 3 seconds call
+        handler.postDelayed(() -> {
+            endCall();
+        }, 3000);
+    }
+
+    private void endCall() {
+        isCalling = false;
+        callingStatus.setVisibility(View.GONE);
+        btnDial.setText("Dial");
+        deleteButton.setEnabled(true);
     }
 }

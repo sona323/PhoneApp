@@ -1,76 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:id="@+id/fragment_keypad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
 
-    <!-- Tab Navigation is outside in MainActivity, so we skip it here -->
+    <!-- Number Display -->
+    <EditText
+        android:id="@+id/numberDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter number"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:inputType="phone"
+        android:focusable="false"
+        android:cursorVisible="false"
+        android:layout_marginBottom="8dp" />
 
-    <!-- Number Display and Backspace -->
+    <!-- Calling Status -->
+    <TextView
+        android:id="@+id/callingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calling..."
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Keypad Rows -->
+    <GridLayout
+        android:id="@+id/keypadGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="4"
+        android:layout_marginBottom="8dp">
+
+        <!-- Row 1 -->
+        <Button android:id="@+id/btn1" android:text="1" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn2" android:text="2" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn3" android:text="3" style="@style/KeypadButton"/>
+
+        <!-- Row 2 -->
+        <Button android:id="@+id/btn4" android:text="4" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn5" android:text="5" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn6" android:text="6" style="@style/KeypadButton"/>
+
+        <!-- Row 3 -->
+        <Button android:id="@+id/btn7" android:text="7" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn8" android:text="8" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn9" android:text="9" style="@style/KeypadButton"/>
+
+        <!-- Row 4 -->
+        <Button android:id="@+id/btnStar" android:text="*" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btn0" android:text="0" style="@style/KeypadButton"/>
+        <Button android:id="@+id/btnHash" android:text="#" style="@style/KeypadButton"/>
+    </GridLayout>
+
+    <!-- Bottom Actions -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|end"
         android:orientation="horizontal"
-        android:padding="8dp">
-
-        <EditText
-            android:id="@+id/numberDisplay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:hint="Enter number"
-            android:inputType="none"
-            android:focusable="false"
-            android:cursorVisible="false"
-            android:gravity="center_vertical"/>
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_delete"
-            android:background="?attr/selectableItemBackgroundBorderless" />
+            android:contentDescription="Delete"
+            android:background="?android:selectableItemBackground"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/btnDial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dial"
+            android:layout_marginStart="32dp"
+            android:paddingHorizontal="32dp" />
     </LinearLayout>
-
-    <!-- Keypad Grid -->
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="4"
-        android:alignmentMode="alignMargins"
-        android:useDefaultMargins="true">
-
-        <!-- First Row -->
-        <Button android:id="@+id/btn1" android:text="1" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn2" android:text="2\nABC" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn3" android:text="3\nDEF" style="@style/KeypadButton"/>
-
-        <!-- Second Row -->
-        <Button android:id="@+id/btn4" android:text="4\nGHI" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn5" android:text="5\nJKL" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn6" android:text="6\nMNO" style="@style/KeypadButton"/>
-
-        <!-- Third Row -->
-        <Button android:id="@+id/btn7" android:text="7\nPQRS" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn8" android:text="8\nTUV" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn9" android:text="9\nWXYZ" style="@style/KeypadButton"/>
-
-        <!-- Fourth Row -->
-        <Button android:id="@+id/btnStar" android:text="*" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btn0" android:text="0" style="@style/KeypadButton"/>
-        <Button android:id="@+id/btnHash" android:text="#" style="@style/KeypadButton"/>
-    </GridLayout>
-
-    <!-- Dial Button -->
-    <Button
-        android:id="@+id/btnDial"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Dial"
-        android:enabled="false"
-        android:layout_marginTop="16dp"/>
 </LinearLayout>
